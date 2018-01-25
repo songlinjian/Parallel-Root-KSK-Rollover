@@ -8,9 +8,9 @@ At the time of writing, the Root Zone KSK is expected to undergo a carefully-org
 
 Note that the recent update on the Root KSK Rollover Project shows that ICANN is calling for feedback and input from the community on generally "how & when to proceed", more specific, the objective criteria and metric to indicate right time to roll the key.
 
-This paper review the problem, analysis the rolling model of KSK, and propose a KSK rolling mechanism as a complement or preparation to the current [ICANN's KSK rollover implementation plan][2].  
+This paper review the problem, analysis the rolling model of KSK, and propose a new architecture as a complement or preparation to the current [ICANN's KSK rollover implementation plan][2]. It is proposed to build a paralleled root system for RFC5011-rollover which divides the ready and unready resolvers into two groups. In one hand, the obsolete resolvers can still survive after KSK rollover in the new root system. On another hand, the ready resolver can go through the rollover without impact. It ends up with a win-win situation.
 
-## Revisit the situation and problem statement
+## Problem Analysis
 
 According to the specification, [RFC5011][4] defines a means for automated, authenticated, and authorized updating of DNSSEC "trust anchors". The essence of this method is the effective protection against the threat model called "N-1 key compromises of N keys" by setting proper hold-down timers in resolver. As a IETF Standards Track document, RFC5011 is chosen as the de facto solution in [SSAC Advisory on DNSSEC Key Rollover in the Root Zone][8],  ICANN's [Root Zone KSK Rollover Plan][5] and the final [operational implementation plan][2]. The assumption is that any resolver who support this protocol can its trust anchors with a new SEP key (KSK). 
 
@@ -105,6 +105,24 @@ In this model KSK-2017 rollover can be triggered without update of KSK-2010 Root
 
 The question on when to turn off the KSK-2010 Root System is depended on the proportion of DR and CR. If the number is under some boundary say 0.5%, then reasonable decision can be made. In addition, this model can safely distinguish the HR from DN and CR which helps people to located the source of DR and CR, and accelerate the process of TRANSFORM.
 
+### Possible Time line for Phased New KSK rollover
+
+According to the description of new model for KSK rollover, the whole process may consist of several phases with a time line.
+
+* 1) Phase A: setup a paralleled root system similar with current root system with different NS servers. It is prepared for RFC5011 Ready Root System.
+
+* 2) Phase B: develop the specification of DNS extension for TRANSFORM function. Develop and distribute DNS extension patch to root servers and available resolvers. 
+
+* 3) Phase C：promotion work are necessary including speech on various meetings, conferences, workshops to outreach.  
+
+* 4) Phase D: trigger the initial TRANSFORM on KSK-2010 Root Server
+
+* 5) Phase E：trigger the KSK-2017 rollover process in RFC5011 Ready Root Server when the proportion is beyond a certain number(say 80%). Future KSK rollover after KSK-2017 can be conducted every 5 years independent of the status of KSK-2010 Root Server 
+
+* 6) Phase F: If the proportion of DR and CR is under a certain boundary(say 0.5%), turn off the KSK-2010 Root Server. Phase F may be never come or long time to come.
+
+Note that Phases described above is roughly in a sequence but not strictly isolated. For example, Phase A, B, C can overlap and process in coordination.  
+
 ## The Design of TRANSFORM 
 
 In the concept model of New KSK rollover, the TRANSFORM process is the key of the success. It require new DNS extension and functions in both authoritative and recursive side servers. Again this document will not go deep for detailed specification for TRANSFORM. More specific proposals are necessary based on the architecture of this document if the community feel it deserve further protocol development.  
@@ -117,7 +135,7 @@ To achieve the switch between the two root system, the design of TRANSFORM shoul
 
 * Continuous TRANSFORM is for curable resolver who get ready with latest DNS updates months or years later (or their operator is got informed with latest information). They will be ready for TRANSFORM as well. Different from Bootstrap TRANSFORM, these resolvers will switch to a system that is already rolling to KSK-2017.
 
-Usually resolver bootstrap and switch itself with a "safety belt" information (SBELT). More specifically recursive resolver bootstrap using [priming query][10] with local configuration. It is OK with out-of-band of FRANSFORM by manually configuring the resolver with a new SBELT (Hint file, named.cache for BIND9) containing the information of root servers in RFC5011 Ready Root System and reboot it. Given that all resolvers are already online and connected to KSK-2010 Root System, a root-rollover-like mechanism is desirable with automated and security consideration. 
+Usually resolver bootstrap itself with a "safety belt" information (SBELT). More specifically recursive resolver bootstrap using [priming query][10] with local configuration. It is OK with out-of-band of FRANSFORM by manually configuring the resolver with a new SBELT (Hint file, named.cache for BIND9) containing the information of root servers in RFC5011 Ready Root System and reboot it. Given that all resolvers are already online and connected to KSK-2010 Root System, a root-rollover-like mechanism is desirable with automated and security consideration. 
 
 ### An TBD DNSSEC extension
 
@@ -131,26 +149,23 @@ After validated the information of new set of root server, resolver can perform 
 
 Continuous TRANSFORM is more complex because the TA of RFC5011 Ready Root Server is already rolled without KSK2010. So the Continuous TRANSFORM should consider a RFC5011-like KSK-rollover in design which helps the resolver to roll the key.Continuous TRANSFORM More design choices can be borrowed from RFC5011. 
 
-## Time line for Phased New KSK rollover
+## Conclusion, Future work and other Consideration
 
-According to the description of new model for KSK rollover, the whole process may consist of several phases with a time line.
+This document review and analyze the current ICANN's Root Zone KSK rollover situation and problem. Due to unclear RFC5011-rollover adoption proportion, the key issue of KSK rollover process is converted to a new technology adoption and transition problem from old-key DNSSEC to new-key DNSSEC.
 
-* 1) Phase A: setup a paralleled root system similar with current root system with different NS servers. It is prepared for RFC5011 Ready Root System.
+Based on the analysis, the problem of KSK rollover has been decoupled into two independent goals: 1) How to keep obsolete resolvers alive after KSK rollover if there is one rollover; 2) How to roll the key for most ready resolvers to reduce the risk of old key. An new architecture for KSK rollover is proposed in this document providing a KSK-2017 transition root infrastructure with an additional paralleled root system for KSK-2017 rollover.It provides a "buffer zone" for obsolete resolver to stay and survive in the KSK-2010 DNSSEC Root system. Meanwhile Healthy Resolver and cooperated operators can roll the key independent on the unready resolver. In addition it provide a way for KSK rollover operator(ICANN) to accurately measure the transition process which will helps a decision with clear and objective metrics.   
 
-* 2) Phase B: develop the specification of DNS extension for TRANSFORM function. Develop and distribute DNS extension patch to root servers and available resolvers. 
+However there are some other concerns and consideration on this plan:
 
-* 3) Phase C：promotion work are necessary including speech on various meetings, conferences, workshops to outreach.  
+* Uncertainty of time: The transition period from KSK-2010 to KSK-2017 may be very long. In Phase E a satisfied boundary (for example 80%) is not easy to reach which is dependent on the adoption of new TRANSFORM DNSSEC extension. It is also not clear that the boundary of Phase F can be satisfied.
+* Create a paralleled Root system will add burden of current root operators. Now there are 700+ root instances. Then we need another 700+ instance to achieve the goal. It can be optimized with some techniques like multiple view for different resolvers to fully use the existing root infrastructure.
+* Time and resource to proceed. It is a new architecture to roll the key which means in oder to achieve Phase A,B,C we need restart the work with a new implement plan, a new time line, waiting for new DNS specification etc. It requires another two or three years and necessary resources. It is not clear ICANN can afford that plan given the recent report of ICANN financial issues.
 
-* 4) Phase D: trigger the initial TRANSFORM on KSK-2010 Root Server
+Note that before the draft document is finished there is a idea come up with my mind. Theoretically there is another possibility to switched the Dying Resolver and Curable Resolver to this new root system by renumbering addresses of the root. ICANN's KSK rollover plan can continue perform on the current root system. This approach is in question because the renumbering will affect the Healthy Resolver as well. 
 
-* 5) Phase E：trigger the KSK-2017 rollover process in RFC5011 Ready Root Server. Future KSK rollover after KSK-2017 can be conducted every 5 years independent of the status of KSK-2010 Root Server 
+## Acknowledge 
 
-* 6) Phase F: If the proportion of DR and CR is under a certain boundary, turn off the KSK-2010 Root Server. Phase F may be never come or long time to come.
-
-## Future work
-
-(Note theoretically there is another possibility to switched the Dying Resolver and Curable Resolver to this new root system by renumbering addresses of the root. ICANN's KSK rollover plan can continue perform on the current root system. This approach is in question because the renumbering will affect the Healthy Resolver as well.)
-
+[Alternative Rootism][11] is not a new idea. It's proposed 13 years ago by Dr. Paul Vixie suggesting IANA create an advanced services root zone. It is introduce huge controversy at that time. [Yeti testbed][12] is a prototype of this idea and running for two years.
 
 [1]:www.icann.org/resources/pages/ksk-rollover
 [2]: www.icann.org/en/system/files/files/ksk-rollover-operational-implementation-plan-22jul16-en.pdf
@@ -162,5 +177,7 @@ According to the description of new model for KSK rollover, the whole process ma
 [8]: https://www.icann.org/en/system/files/files/sac-063-en.pdf
 [9]: https://www.icann.org/en/system/files/files/root-ksk-roll-postponed-17oct17-en.pdf
 [10]: https://tools.ietf.org/html/rfc8109
+[11]: https://yeti-dns.org/resource/workshop/paul-2015-10-Yokohama.pdf
+[12]: http://yeti-dns.org/ 
 
 
