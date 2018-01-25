@@ -4,7 +4,7 @@
 
 DNSSEC is a technology to keep origin authentication and data integrity of DNS. There is a consensus in the technical community that that maintaining an up-to-date DNSSEC Root Zone KSK is essential to ensuring DNSSEC-validating DNS resolvers continue to function following the rollover. ICANN as IANA Functions Operator are responsible for the Root Zone KSK rollover. For more information please visit [www.icann.org/resources/pages/ksk-rollover][1].
 
-At the time of writing, the Root Zone KSK is expected to undergo a carefully-organized rollover as described in [2017 KSK Rollover Operational Implementation Plan][2]. However, the [process is postponed][3] on 27 September 2017 due to some recently obtained data showing significant number of resolvers used by Internet Service Providers (ISPs) and Network Operators are not yet ready for the Key Rollover. Further details on the data and reasoning behind the postponement were given afterwards.
+At the time of writing, the Root Zone KSK is expected to undergo a carefully-organized rollover as described in [2017 KSK Rollover Operational Implementation Plan][2]. However, the [process is postponed][3] on 27 September 2017 due to some recently obtained data showing significant number of resolvers used by Internet Service Providers (ISPs) and Network Operators are not yet ready for the Key Rollover. Further details on [the data and reasoning behind the postponement][13] were given afterwards.
 
 Note that the recent update on the Root KSK Rollover Project shows that ICANN is calling for feedback and input from the community on generally "how & when to proceed", more specific, the objective criteria and metric to indicate right time to roll the key.
 
@@ -179,5 +179,6 @@ Note that before the draft document is finished there is a idea come up with my 
 [10]: https://tools.ietf.org/html/rfc8109
 [11]: https://yeti-dns.org/resource/workshop/paul-2015-10-Yokohama.pdf
 [12]: http://yeti-dns.org/ 
+[13]: https://www.icann.org/en/system/files/files/root-ksk-roll-postponed-17oct17-en.pdf
 
 
