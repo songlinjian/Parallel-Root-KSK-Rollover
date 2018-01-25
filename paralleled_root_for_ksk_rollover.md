@@ -135,7 +135,7 @@ To achieve the switch between the two root system, the design of TRANSFORM shoul
 
 * Continuous TRANSFORM is for curable resolver who get ready with latest DNS updates months or years later (or their operator is got informed with latest information). They will be ready for TRANSFORM as well. Different from Bootstrap TRANSFORM, these resolvers will switch to a system that is already rolling to KSK-2017.
 
-Usually resolver bootstrap itself with a "safety belt" information (SBELT). More specifically recursive resolver bootstrap using [priming query][10] with local configuration. It is OK with out-of-band of FRANSFORM by manually configuring the resolver with a new SBELT (Hint file, named.cache for BIND9) containing the information of root servers in RFC5011 Ready Root System and reboot it. Given that all resolvers are already online and connected to KSK-2010 Root System, a root-rollover-like mechanism is desirable with automated and security consideration. 
+Usually resolver bootstrap itself with a "safety belt" information (SBELT). More specifically recursive resolver bootstrap using [priming query][10] with local configuration. It is OK with out-of-band of FRANSFORM by manually configuring the resolver with a new SBELT (Hint file for BIND9) containing the information of root servers in RFC5011 Ready Root System and reboot it. Given that all resolvers are already online and connected to KSK-2010 Root System, a root-rollover-like mechanism is desirable with automated and security consideration. 
 
 ### An TBD DNSSEC extension
 
