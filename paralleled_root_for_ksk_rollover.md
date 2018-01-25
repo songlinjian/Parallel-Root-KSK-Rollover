@@ -163,7 +163,7 @@ However there are some other concerns and consideration on this plan:
 
 Note that before the draft document is finished there is a idea come up with my mind. Theoretically there is another possibility to switched the Dying Resolver and Curable Resolver to this new root system by renumbering addresses of the root. ICANN's KSK rollover plan can continue perform on the current root system. This approach is in question because the renumbering will affect the Healthy Resolver as well. 
 
-## Acknowledge 
+## Acknowledgement 
 
 [Alternative Rootism][11] is not a new idea. It's proposed 13 years ago by Dr. Paul Vixie suggesting IANA create an advanced services root zone. It is introduce huge controversy at that time. [Yeti testbed][12] is a prototype of this idea and running for two years.
 
