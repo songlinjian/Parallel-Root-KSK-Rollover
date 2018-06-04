@@ -167,11 +167,11 @@ Note that before the draft document is finished there is a idea come up with my 
 
 [Alternative Rootism][11] is not a new idea. It's proposed 13 years ago by Dr. Paul Vixie suggesting IANA create an advanced services root zone. It is introduce huge controversy at that time. [Yeti testbed][12] is a prototype of this idea and running for two years.
 
-[1]:www.icann.org/resources/pages/ksk-rollover
-[2]: www.icann.org/en/system/files/files/ksk-rollover-operational-implementation-plan-22jul16-en.pdf
-[3]: www.icann.org/news/announcement-2017-09-27-en
-[4]: tools.ietf.org/html/rfc5011
-[5]: www.iana.org/reports/2016/root-ksk-rollover-design-20160307.pdf 
+[1]:https://www.icann.org/resources/pages/ksk-rollover
+[2]: https://www.icann.org/en/system/files/files/ksk-rollover-operational-implementation-plan-22jul16-en.pdf
+[3]: https://www.icann.org/news/announcement-2017-09-27-en
+[4]: https://tools.ietf.org/html/rfc5011
+[5]: https://www.iana.org/reports/2016/root-ksk-rollover-design-20160307.pdf 
 [6]: https://tools.ietf.org/html/rfc8145
 [7]: https://tools.ietf.org/html/draft-ietf-dnsop-kskroll-sentinel-00
 [8]: https://www.icann.org/en/system/files/files/sac-063-en.pdf
